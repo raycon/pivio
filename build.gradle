@@ -12,17 +12,21 @@ plugins {
 
     // Apply the application plugin to add support for building an application
     id 'application'
+    
 }
 
 // Define the main class for the application
 mainClassName = 'App'
 
 dependencies {
-    // This dependency is found on compile classpath of this component and consumers.
-    compile 'com.google.guava:guava:23.0'
+	compile 'joda-time:joda-time:2.9.9'
+	compile 'commons-io:commons-io:2.6'
+	compile 'com.drewnoakes:metadata-extractor:2.11.0'
+    compile 'joda-time:joda-time'
 
     // Use JUnit test framework
     testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:3.10.0'
 }
 
 // In this section you declare where to find the dependencies of your project
