@@ -1,6 +1,9 @@
+import com.raegon.pivio.Converter;
+import com.raegon.pivio.Executor;
 import com.raegon.pivio.Pivio;
 import org.apache.commons.cli.*;
 
+import java.io.File;
 import java.nio.file.Paths;
 
 public class PivioApplication {
@@ -8,9 +11,9 @@ public class PivioApplication {
     public static void main(String[] args) throws ParseException {
 
         Options options = new Options();
-        options.addOption("s", "source", true, "source path");
-        options.addOption("t", "target", true, "target path");
-        options.addOption("po", "postfix", true, "rename postfix");
+        options.addOption("s", "source", true, "source directory path");
+        options.addOption("t", "target", true, "target directory path");
+        options.addOption("postfix", true, "rename postfix");
         options.addOption("h", "help", false, "print this message");
         options.addOption("preview", false, "preview");
 
@@ -25,13 +28,19 @@ public class PivioApplication {
 
         String source = cmd.getOptionValue("s");
         String target = cmd.getOptionValue("t");
-        String postfix = cmd.getOptionValue("po");
+        String postfix = cmd.getOptionValue("postfix", "");
+
+        Converter converter = new Converter();
+        converter.setSourceDirectory(Paths.get(source));
+        converter.setTargetDirectory(Paths.get(target));
+        converter.setDirectoryPattern("yyyy" + File.pathSeparator + "MM");
+        converter.setFilenamePattern("yyyyMMdd_HHmmss");
+        converter.setPostfix(postfix);
 
         Pivio pivio = new Pivio();
-        pivio.setSource(Paths.get(source));
-        pivio.setTarget(Paths.get(target));
-        pivio.setPostfix(postfix);
-        
+        pivio.setConverter(converter);
+        pivio.setExecutor(new Executor());
+
         if (cmd.hasOption("preview")) {
             pivio.preview();
         } else {

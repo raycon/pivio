@@ -34,6 +34,15 @@ public abstract class Media {
         }
     }
 
+    public static boolean isMedia(Path path) {
+        try {
+            Media.get(path);
+        } catch (RuntimeException e) {
+            return false;
+        }
+        return true;
+    }
+
     public abstract DateTime getDateTime(DateTimeZone zone);
 
 }
