@@ -1,6 +1,7 @@
-package com.raegon.pivio;
+package com.raegon.pivio.path.impl;
 
 import com.raegon.pivio.media.Media;
+import com.raegon.pivio.path.Converter;
 import lombok.Data;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -12,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Data
-public class Transporter {
+public class DirectoryConverter implements Converter {
 
     private Path target;
 
@@ -22,7 +23,8 @@ public class Transporter {
 
     private DateTimeZone targetZone = DateTimeZone.getDefault();
 
-    private Map<Path, Path> convert(Map<Path, Path> map) {
+    @Override
+    public Map<Path, Path> convert(Map<Path, Path> map) {
         Map<Path, Path> result = new LinkedHashMap<>();
         map.forEach((source, target) -> {
             result.put(source, convert(source, target));

@@ -1,6 +1,7 @@
-package com.raegon.pivio;
+package com.raegon.pivio.path.impl;
 
 import com.raegon.pivio.media.Media;
+import com.raegon.pivio.path.Extractor;
 import lombok.Data;
 
 import java.io.IOException;
@@ -13,22 +14,20 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Data
-public class Extractor {
+public class MediaExtractor implements Extractor {
 
-    private Path source;
-
-    private Map<Path, Path> extract() {
+    public Map<Path, Path> extract(Path path) {
         Map<Path, Path> map = new LinkedHashMap<>();
-        List<Path> sources = getSources();
+        List<Path> sources = getSources(path);
         for (Path source : sources) {
             map.put(source, source);
         }
         return map;
     }
 
-    private List<Path> getSources() {
+    private List<Path> getSources(Path path) {
         try {
-            return Files.walk(source)
+            return Files.walk(path)
                     .filter(p -> !Files.isDirectory(p))
                     .filter(Media::isMedia)
                     .collect(Collectors.toList());

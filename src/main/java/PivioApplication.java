@@ -1,4 +1,8 @@
 import com.raegon.pivio.*;
+import com.raegon.pivio.path.impl.DefaultTransporter;
+import com.raegon.pivio.path.impl.MediaExtractor;
+import com.raegon.pivio.path.impl.FilenameConverter;
+import com.raegon.pivio.path.impl.DirectoryConverter;
 import org.apache.commons.cli.*;
 import org.joda.time.DateTimeZone;
 
@@ -29,22 +33,22 @@ public class PivioApplication {
         String target = cmd.getOptionValue("t");
         String postfix = cmd.getOptionValue("postfix", "");
 
-        Extractor extractor = new Extractor();
+        MediaExtractor extractor = new MediaExtractor();
         extractor.setSource(Paths.get(source));
 
-        Renamer renamer = new Renamer();
+        FilenameConverter renamer = new FilenameConverter();
         renamer.setPattern("yyyyMMdd_HHmmss");
         renamer.setPostfix(postfix);
         renamer.setSourceZone(DateTimeZone.getDefault());
         renamer.setTargetZone(DateTimeZone.getDefault());
 
-        Transporter transporter = new Transporter();
+        DirectoryConverter transporter = new DirectoryConverter();
         transporter.setTarget(Paths.get(target));
         transporter.setPattern("yyyy"+ File.pathSeparator +"MM"+ File.pathSeparator +"yyyy-MM-dd");
         transporter.setSourceZone(DateTimeZone.getDefault());
         transporter.setTargetZone(DateTimeZone.getDefault());
 
-        Executor executor = new Executor();
+        DefaultTransporter executor = new DefaultTransporter();
 
         Pivio pivio = new Pivio();
         pivio.setExtractor(extractor);
