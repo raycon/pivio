@@ -1,34 +1,21 @@
 package com.raegon.pivio.path.impl;
 
-import com.raegon.pivio.path.Converter;
+import com.raegon.pivio.path.Resolver;
 import lombok.Data;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @Data
-public class ExistFileConverter implements Converter {
+public class DefaultResolver implements Resolver {
 
     private Path duplicateDirectory;
 
     private Path conflictDirectory;
 
     @Override
-    public Map<Path, Path> convert(Map<Path, Path> map) {
-        Map<Path, Path> result = new LinkedHashMap<>();
-        map.forEach((source, target) -> {
-            Path path = convert(source, target);
-            if (path != null) {
-                result.put(source, path);
-            }
-        });
-        return result;
-    }
-
-    public Path convert(Path source, Path target) {
+    public Path resolve(Path source, Path target) {
         try {
             if (Files.exists(target)) {
                 if (isSame(source, target)) {
@@ -42,7 +29,8 @@ public class ExistFileConverter implements Converter {
         }
     }
 
-    public boolean isSame(Path source, Path target) throws IOException {
+    private boolean isSame(Path source, Path target) throws IOException {
         return Files.size(source) == Files.size(target);
     }
+
 }
