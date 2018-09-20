@@ -36,19 +36,7 @@ public class DirectoryConverter implements Converter {
         DateTime dateTime = Media.get(source).getDateTime(sourceZone);
         DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern).withZone(targetZone);
         Path parent = target.resolve(fmt.print(dateTime));
-        // Check exist directory
         return parent.resolve(source.getFileName());
     }
-
-//    public static List<Path> getExistDateDirectories(Path root, Path directory) {
-//        Path year = directory.getParent();
-//        try {
-//            return Files.list(year).filter(Files::isDirectory).filter(dir -> {
-//                return dir.toString().startsWith(directory.toString());
-//            }).collect(Collectors.toList());
-//        } catch (IOException e) {
-//            return new ArrayList<Path>();
-//        }
-//    }
 
 }

@@ -34,7 +34,6 @@ public class PivioApplication {
         String postfix = cmd.getOptionValue("postfix", "");
 
         MediaExtractor extractor = new MediaExtractor();
-        extractor.setSource(Paths.get(source));
 
         FilenameConverter renamer = new FilenameConverter();
         renamer.setPattern("yyyyMMdd_HHmmss");

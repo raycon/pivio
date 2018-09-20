@@ -5,6 +5,6 @@ import java.util.Map;
 
 public interface Extractor {
 
-    Map<Path, Path> extract(Path path);
+    Map<Path, Path> extract();
 
 }

@@ -16,9 +16,11 @@ import java.util.stream.Collectors;
 @Data
 public class MediaExtractor implements Extractor {
 
-    public Map<Path, Path> extract(Path path) {
+    private Path source;
+
+    public Map<Path, Path> extract() {
         Map<Path, Path> map = new LinkedHashMap<>();
-        List<Path> sources = getSources(path);
+        List<Path> sources = getSources(source);
         for (Path source : sources) {
             map.put(source, source);
         }
