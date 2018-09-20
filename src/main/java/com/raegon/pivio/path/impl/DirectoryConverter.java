@@ -8,9 +8,14 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Data
 public class DirectoryConverter implements Converter {
@@ -36,7 +41,26 @@ public class DirectoryConverter implements Converter {
         DateTime dateTime = Media.get(source).getDateTime(sourceZone);
         DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern).withZone(targetZone);
         Path parent = target.resolve(fmt.print(dateTime));
-        return parent.resolve(source.getFileName());
+
+        // Find current datetime directories with same prefix
+        List<Path> directories = getExistDirectories(parent);
+        if (directories.size() == 1) {
+            return directories.get(0).resolve(source.getFileName());
+        } else {
+            return parent.resolve(source.getFileName());
+        }
+    }
+
+    private List<Path> getExistDirectories(Path directory) {
+        Path parent = directory.getParent();
+        try {
+            return Files.list(parent)
+                    .filter(Files::isDirectory)
+                    .filter(dir -> dir.toString().startsWith(directory.toString()))
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            return Collections.emptyList();
+        }
     }
 
 }

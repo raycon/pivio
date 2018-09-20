@@ -1,8 +1,5 @@
-import com.raegon.pivio.*;
-import com.raegon.pivio.path.impl.DefaultTransporter;
-import com.raegon.pivio.path.impl.MediaExtractor;
-import com.raegon.pivio.path.impl.FilenameConverter;
-import com.raegon.pivio.path.impl.DirectoryConverter;
+import com.raegon.pivio.Pivio;
+import com.raegon.pivio.path.impl.*;
 import org.apache.commons.cli.*;
 import org.joda.time.DateTimeZone;
 
@@ -13,6 +10,7 @@ public class PivioApplication {
 
     public static void main(String[] args) throws ParseException {
 
+        // Read Options
         Options options = new Options();
         options.addOption("s", "source", true, "source directory path");
         options.addOption("t", "target", true, "target directory path");
@@ -33,27 +31,33 @@ public class PivioApplication {
         String target = cmd.getOptionValue("t");
         String postfix = cmd.getOptionValue("postfix", "");
 
-        MediaExtractor extractor = new MediaExtractor();
+        // Pivio
+        DefaultExtractor extractor = new DefaultExtractor();
+        extractor.setSource(Paths.get(source));
 
-        FilenameConverter renamer = new FilenameConverter();
-        renamer.setPattern("yyyyMMdd_HHmmss");
-        renamer.setPostfix(postfix);
-        renamer.setSourceZone(DateTimeZone.getDefault());
-        renamer.setTargetZone(DateTimeZone.getDefault());
+        FilenameConverter nameConverter = new FilenameConverter();
+        nameConverter.setPattern("yyyyMMdd_HHmmss");
+        nameConverter.setPostfix(postfix);
+        nameConverter.setSourceZone(DateTimeZone.getDefault());
+        nameConverter.setTargetZone(DateTimeZone.getDefault());
 
-        DirectoryConverter transporter = new DirectoryConverter();
-        transporter.setTarget(Paths.get(target));
-        transporter.setPattern("yyyy"+ File.pathSeparator +"MM"+ File.pathSeparator +"yyyy-MM-dd");
-        transporter.setSourceZone(DateTimeZone.getDefault());
-        transporter.setTargetZone(DateTimeZone.getDefault());
+        DirectoryConverter directoryConverter = new DirectoryConverter();
+        directoryConverter.setTarget(Paths.get(target));
+        directoryConverter.setPattern("yyyy" + File.pathSeparator + "MM" + File.pathSeparator + "yyyy-MM-dd");
+        directoryConverter.setSourceZone(DateTimeZone.getDefault());
+        directoryConverter.setTargetZone(DateTimeZone.getDefault());
 
-        DefaultTransporter executor = new DefaultTransporter();
+        DuplicateConverter duplicateConverter = new DuplicateConverter();
+        duplicateConverter.setTarget(Paths.get(source).resolve("duplicate"));
+
+        DefaultTransporter transporter = new DefaultTransporter();
 
         Pivio pivio = new Pivio();
         pivio.setExtractor(extractor);
-        pivio.setRenamer(renamer);
+        pivio.setFilenameConverter(nameConverter);
+        pivio.setDirectoryConverter(directoryConverter);
+        pivio.setDuplicateConverter(duplicateConverter);
         pivio.setTransporter(transporter);
-        pivio.setExecutor(executor);
 
         if (cmd.hasOption("preview")) {
             pivio.preview();

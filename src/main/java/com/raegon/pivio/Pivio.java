@@ -1,9 +1,6 @@
 package com.raegon.pivio;
 
-import com.raegon.pivio.path.impl.DefaultTransporter;
-import com.raegon.pivio.path.impl.MediaExtractor;
-import com.raegon.pivio.path.impl.FilenameConverter;
-import com.raegon.pivio.path.impl.DirectoryConverter;
+import com.raegon.pivio.path.impl.*;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,13 +8,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Pivio {
 
-    private MediaExtractor extractor;
+    private DefaultExtractor extractor;
 
-    private FilenameConverter renamer;
+    private FilenameConverter filenameConverter;
 
-    private DirectoryConverter transporter;
+    private DirectoryConverter directoryConverter;
 
-    private DefaultTransporter executor;
+    private DuplicateConverter duplicateConverter;
+
+    private DefaultTransporter transporter;
 
     public void preview() {
         log.info("preview");

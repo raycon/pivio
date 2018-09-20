@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Data
-public class MediaExtractor implements Extractor {
+public class DefaultExtractor implements Extractor {
 
     private Path source;
 
