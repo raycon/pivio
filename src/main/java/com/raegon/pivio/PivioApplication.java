@@ -26,7 +26,7 @@ public class PivioApplication {
         options.addOption("t", "target", true, "target directory path");
         options.addOption("postfix", true, "rename postfix");
         options.addOption("h", "help", false, "print this message");
-        options.addOption("preview", false, "preview");
+        options.addOption("execute", false, "execute");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
@@ -69,10 +69,10 @@ public class PivioApplication {
         pivio.setDuplicateConverter(duplicateConverter);
         pivio.setTransporter(transporter);
 
-        if (cmd.hasOption("preview")) {
-            pivio.preview();
-        } else {
+        if (cmd.hasOption("execute")) {
             pivio.execute();
+        } else {
+            pivio.preview();
         }
 
     }
