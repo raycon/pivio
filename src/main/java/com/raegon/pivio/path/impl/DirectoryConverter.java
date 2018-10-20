@@ -1,13 +1,5 @@
 package com.raegon.pivio.path.impl;
 
-import com.raegon.pivio.media.Media;
-import com.raegon.pivio.path.Converter;
-import lombok.Data;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,10 +9,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import com.raegon.pivio.media.Media;
+import com.raegon.pivio.path.Converter;
+
+import lombok.Data;
+
 @Data
 public class DirectoryConverter implements Converter {
 
-    private Path target;
+    private Path targetDirectory;
 
     private String pattern;
 
@@ -37,17 +39,17 @@ public class DirectoryConverter implements Converter {
         return result;
     }
 
-    private Path convert(Path source, Path target) {
-        DateTime dateTime = Media.get(source).getDateTime(sourceZone);
+    private Path convert(Path from, Path to) {
+        DateTime dateTime = Media.get(from).getDateTime(sourceZone);
         DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern).withZone(targetZone);
-        Path parent = target.resolve(fmt.print(dateTime));
+        Path parent = targetDirectory.resolve(fmt.print(dateTime));
 
         // Find current datetime directories with same prefix
         List<Path> directories = getExistDirectories(parent);
         if (directories.size() == 1) {
-            return directories.get(0).resolve(source.getFileName());
+            return directories.get(0).resolve(to.getFileName());
         } else {
-            return parent.resolve(source.getFileName());
+            return parent.resolve(to.getFileName());
         }
     }
 

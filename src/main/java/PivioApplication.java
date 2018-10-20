@@ -1,10 +1,20 @@
-import com.raegon.pivio.Pivio;
-import com.raegon.pivio.path.impl.*;
-import org.apache.commons.cli.*;
-import org.joda.time.DateTimeZone;
-
 import java.io.File;
 import java.nio.file.Paths;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.joda.time.DateTimeZone;
+
+import com.raegon.pivio.Pivio;
+import com.raegon.pivio.path.impl.DefaultExtractor;
+import com.raegon.pivio.path.impl.DefaultTransporter;
+import com.raegon.pivio.path.impl.DirectoryConverter;
+import com.raegon.pivio.path.impl.DuplicateConverter;
+import com.raegon.pivio.path.impl.FilenameConverter;
 
 public class PivioApplication {
 
@@ -33,7 +43,7 @@ public class PivioApplication {
 
         // Pivio
         DefaultExtractor extractor = new DefaultExtractor();
-        extractor.setSource(Paths.get(source));
+        extractor.setSourceDirectory(Paths.get(source));
 
         FilenameConverter nameConverter = new FilenameConverter();
         nameConverter.setPattern("yyyyMMdd_HHmmss");
@@ -42,13 +52,13 @@ public class PivioApplication {
         nameConverter.setTargetZone(DateTimeZone.getDefault());
 
         DirectoryConverter directoryConverter = new DirectoryConverter();
-        directoryConverter.setTarget(Paths.get(target));
-        directoryConverter.setPattern("yyyy" + File.pathSeparator + "MM" + File.pathSeparator + "yyyy-MM-dd");
+        directoryConverter.setTargetDirectory(Paths.get(target));
+        directoryConverter.setPattern("yyyy" + File.separator + "yyyy-MM-dd");
         directoryConverter.setSourceZone(DateTimeZone.getDefault());
         directoryConverter.setTargetZone(DateTimeZone.getDefault());
 
         DuplicateConverter duplicateConverter = new DuplicateConverter();
-        duplicateConverter.setTarget(Paths.get(source).resolve("duplicate"));
+        duplicateConverter.setDuplicateDirectory(Paths.get(source).resolve("duplicate"));
 
         DefaultTransporter transporter = new DefaultTransporter();
 

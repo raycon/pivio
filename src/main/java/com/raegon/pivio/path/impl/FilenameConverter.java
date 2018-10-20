@@ -1,21 +1,21 @@
 package com.raegon.pivio.path.impl;
 
-import com.raegon.pivio.media.Media;
-import com.raegon.pivio.path.Converter;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.apache.commons.io.FilenameUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
+import com.raegon.pivio.media.Media;
+import com.raegon.pivio.path.Converter;
+
+import lombok.Data;
 
 @Data
-@Slf4j
 public class FilenameConverter implements Converter {
 
     private String pattern;
@@ -28,7 +28,7 @@ public class FilenameConverter implements Converter {
 
     @Override
     public Map<Path, Path> convert(Map<Path, Path> map) {
-        Map<Path, Path> result = new HashMap<>();
+        Map<Path, Path> result = new LinkedHashMap<>();
         map.forEach((source, target) -> {
             int order = 0;
             Path path;
