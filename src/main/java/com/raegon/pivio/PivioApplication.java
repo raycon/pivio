@@ -1,3 +1,4 @@
+package com.raegon.pivio;
 import java.io.File;
 import java.nio.file.Paths;
 
@@ -9,7 +10,6 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.joda.time.DateTimeZone;
 
-import com.raegon.pivio.Pivio;
 import com.raegon.pivio.path.impl.DefaultExtractor;
 import com.raegon.pivio.path.impl.DefaultTransporter;
 import com.raegon.pivio.path.impl.DirectoryConverter;

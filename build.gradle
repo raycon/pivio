@@ -4,7 +4,7 @@ plugins {
     id 'io.franzbecker.gradle-lombok' version '1.14'
 }
 
-mainClassName = 'App'
+mainClassName = 'com.raegon.pivio.PivioApplication'
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.25'
@@ -21,4 +21,15 @@ dependencies {
 
 repositories {
     jcenter()
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.raegon.pivio.PivioApplication'
+    }
+    from {
+		configurations.compile.collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
+	}
 }
