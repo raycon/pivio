@@ -25,6 +25,8 @@ public abstract class Media {
         switch (extension) {
             case "mp4":
             case "MP4":
+            case "mov":
+            case "MOV":
                 return new Video(path);
             case "jpg":
             case "JPG":
